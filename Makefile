@@ -11,3 +11,6 @@ main: main.o
 
 main.o: main.cpp
 		$(CC) -c main.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
+
+clean:
+	@rm -rf *.o main
