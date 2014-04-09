@@ -22,14 +22,13 @@ int main()
         leda::node_array<int> compnum(G,0);
         // call my_STRONG_COMPONENTS 
         scc_test = my_STRONG_COMPONENTS(G, compnum);
+        test = my_STRONG_COMPONENTS_checker(G,compnum);
         // initializing compnum again 
         compnum.init(G,0);
         // using leda's STRONG_COMPONENTS to test our results
          // scc = STRONG_COMPONENTS(G, compnum);
          // std::cout<<"["<<it+1<<"] My_STRONG_COMPONENTS results: "<<scc_test<<std::endl;
          // std::cout<<"["<<it+1<<"] STRONG_COMPONENTS results: "<<scc<<std::endl;
-        test = my_STRONG_COMPONENTS_checker(G,compnum);
-        std::cout<<test<<std::endl;
         G.clear();
 
         

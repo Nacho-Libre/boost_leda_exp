@@ -45,32 +45,29 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
 {
     // declarations
     bool test = true;
-    int n = G.number_of_nodes();
     int count;
-    // for temp i use an initial value that is highly unlikely 
+    // for temp,I use an initial value that is highly unlikely 
     // for compnum to occur so that there is no conflict during 
     // the comparisons
     int temp=1000;
 
     node x,y;
     list<node> LN;
-    node_array<int> compnum1(G,0);
-    node_array<int> compnum2(G,0);
     node_array<bool> reached(G,false);
 
     // testing my_STRONG_COMPONENTS 
-    count = my_STRONG_COMPONENTS(G,compnum1);
+    count = my_STRONG_COMPONENTS(G,compnum);
 
     forall_nodes(x,G)
     {
-        if (temp!=compnum1[x])
+        if (temp!=compnum[x])
         {
-            temp = compnum1[x];
+            temp = compnum[x];
             LN = DFS(G,x,reached);
 
             forall_nodes(y,G)
             {
-                if (compnum1[y]==temp && reached[y]==false)
+                if (compnum[y]==temp && reached[y]==false)
                 {
                     test=false;
                     return test;
@@ -82,7 +79,7 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
             LN = DFS(G,x,reached);
             forall_nodes(y,G)
             {
-                if (compnum1[y]==temp && reached[y]==false)
+                if (compnum[y]==temp && reached[y]==false)
                 {
                     test=false;
                     return test;
