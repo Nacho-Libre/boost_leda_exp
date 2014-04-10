@@ -16,4 +16,4 @@ hw01_functions.o: hw01_functions.cpp hw01.h
 		$(CC) -c -o $@ hw01_functions.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
 
 clean:
-	@rm -rf *.o main
+	rm -rf *.o main
