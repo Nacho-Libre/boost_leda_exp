@@ -58,7 +58,6 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
 {
     // declarations
     bool test = true;
-    int count;
     // for temp,I use an initial value that is highly unlikely 
     // for compnum to occur so that there is no conflict during 
     // the comparisons

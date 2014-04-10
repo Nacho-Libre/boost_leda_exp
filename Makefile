@@ -1,7 +1,7 @@
 CC=g++ 
 LEDAROOT=/usr/local/LEDA
 INCLUDEDIR=$(LEDAROOT)/incl
-CPPFLAGS=-Wall -O2 -fno-strict-aliasing
+CPPFLAGS=-Wall -O2 -fno-strict-aliasing -std=c++0x
 LIBX11=/usr/X11R6/lib64/
 
 all:  main

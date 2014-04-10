@@ -6,6 +6,7 @@
 #include <LEDA/graph/node_array.h>
 #include <LEDA/graph/basic_graph_alg.h>
 #include <math.h>
+#include <chrono>
 #include <iostream>
 
 using namespace leda;
