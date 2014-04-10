@@ -1,9 +1,16 @@
+// Ceid Upatras academic year 2013-2014
+// (LEDA) implementations
+// functions file
+
 #include "hw01.h"
 
 using namespace leda;
 
-// STRONG_C0MPONENTS implementation to find scc's of a given graph
-int my_STRONG_COMPONENTS(graph& G, node_array<int>& compnum2)
+// my_STRONG_C0MPONENTS tries to find all scc's of a given graph
+// it returns an integer which represents how many scc's it found
+// and updates LEDA's built-in data type node_array compnum
+// assigning each node with scc's id it belongs to.
+int my_STRONG_COMPONENTS(graph& G, node_array<int>& compnum)
 {
     // declarations
     int count = 0;
@@ -24,16 +31,22 @@ int my_STRONG_COMPONENTS(graph& G, node_array<int>& compnum2)
     {
        LN1[compnum1[x]] = x;
     }
+
     // creating G_rev
     G.rev_all_edges();
 
+    // starting from the node with the highest completition time
+    // we run LEDA's dfs algorithm on G_rev and calculate how 
+    // many nodes where reached, those nodes should make up a 
+    // scc, we update compnum with the id of the scc they belong
+    // to (eg  scc: 0, scc: 1, scc: 2) 
     for(int i=n; i>0; i--)
     { 
         if (!reached[LN1[i]]) 
         {
             LN2 = DFS(G,LN1[i],reached);
             forall(y,LN2)
-                compnum2[y] = count;
+                compnum[y] = count;
             count++;
         }
     }
@@ -55,9 +68,13 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
     list<node> LN;
     node_array<bool> reached(G,false);
 
-    // testing my_STRONG_COMPONENTS 
-    count = my_STRONG_COMPONENTS(G,compnum);
-
+    // for some the nodes of G that belong to the same
+    // scc (at least for one for every scc). based on what
+    // my_STRONG_COMPONENTS returned, we run leda's dfs 
+    // algorithm and then check if every node in the scc
+    // was reached, if all nodes were reached we then reverse
+    // all the edges of G and do exactly the same, if again 
+    // all nodes have been reached the function returns true
     forall_nodes(x,G)
     {
         if (temp!=compnum[x])

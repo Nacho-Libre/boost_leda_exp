@@ -1,3 +1,7 @@
+// Ceid Upatras academic year 2013-2014
+// (LEDA) implementations
+// header file
+
 #include <LEDA/graph/graph.h>
 #include <LEDA/graph/node_array.h>
 #include <LEDA/graph/basic_graph_alg.h>
