@@ -6,19 +6,22 @@
 int main()
 {
 
-    // auxiliary variables and arrays
+    // auxiliary variables
     int m;
     int scc,my_scc;
     int Gsize1 [] = { 2000, 4000, 9000 };
     int Gsize2 [] = { 1000, 4000, 9000 };
-    int cliques [] = { 5, 10, 20 };
+    unsigned int cliques [] = { 5, 10, 20 };
+    node temp_n1,temp_n2,x;
+    list<node> LN;
 
     // time variables 
     std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> elapsed_seconds;
     
-    // declare graph G and an auxiliary graph temp
+    // declare graph G and auxiliary graph temp
     leda::graph G,temp;
+    node_array<bool> reached(G,false);
 
     // iterating over Gsize1 and generating random graphs with leda's
     // random_graph(). For each Graph created my_STRONG_COMPONENTS()
@@ -59,19 +62,41 @@ int main()
         G.clear();
     }
 
-    // iterating over Gsize2 
+    // iterating over Gsize2 values and creating cliqued graphs
     for (unsigned int it=0; it<sizeof(Gsize2)/sizeof(Gsize2[0]); it++)
     {
-        // in this loop the cliqued graphs are created
-        for (unsigned int it1=0; it1<cliques[it]; it1++) 
-        {
-            // creating a clique 
-            leda::complete_graph(temp, Gsize2[it]/cliques[it]);        
-            // merging clique with the rest of the graph, it still remains unclear 
-            // on which node of the existing graph does the clique connect to
-            G.join(temp);
-        }
+        // creating the first clique 
+        leda::complete_graph(temp, Gsize2[it]/cliques[it]);        
+        // adding clique to the graph
+        G.join(temp);
 
+        // we now chose a random node from that clique
+        temp_n1 = G.choose_node();
+        temp_n2 = G.choose_node();
+
+        // in this loop, the rest of the cliques are going to be created 
+        // and added to the rest of the graph
+        for (unsigned int it1=1; it1<cliques[it]; it1++) 
+        {
+            leda::complete_graph(temp, Gsize2[it]/cliques[it]);        
+            G.join(temp);
+            // we are going to run DFS on graph G, the nodes that 
+            // are not reached are part of the most recently created clique
+            reached.init(G,false);
+            LN = DFS(G,temp_n1,reached);
+            forall_nodes(x,G)
+            {
+                // for the first unreached node we find (which should be part
+                // of the newest clique) we create an edge to connect it with a
+                // random node from the previews clique
+                if (!reached[x])
+                {
+                    G.new_edge(temp_n2,x);
+                    temp_n2 = x;
+                    break;
+                }
+            }
+        }
         G.clear();
     }
     return 0;
