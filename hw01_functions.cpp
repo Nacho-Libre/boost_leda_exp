@@ -56,8 +56,6 @@ int my_STRONG_COMPONENTS(graph& G, node_array<int>& compnum)
 // checker to validate my_STRONG_COMPONENTS results
 bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
 {
-    // declarations
-    bool test = true;
     // for temp,I use an initial value that is highly unlikely 
     // for compnum to occur so that there is no conflict during 
     // the comparisons
@@ -84,10 +82,7 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
             forall_nodes(y,G)
             {
                 if (compnum[y]==temp && reached[y]==false)
-                {
-                    test=false;
-                    return test;
-                }
+                    return false;
             }
 
             G.rev_all_edges();
@@ -96,13 +91,10 @@ bool my_STRONG_COMPONENTS_checker(graph& G, node_array<int>& compnum)
             forall_nodes(y,G)
             {
                 if (compnum[y]==temp && reached[y]==false)
-                {
-                    test=false;
-                    return test;
-                }
+                    return false;
             }
         }
     }
 
-    return test;
+    return true;
 }

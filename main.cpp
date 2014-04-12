@@ -2,32 +2,58 @@
 // experimental use of LEDA's built-in functions and data types
 // file main.cpp
 #include "hw01.h"
+    
+// auxiliary function to estimate execution time for both my_STRONG_COMPONENTS & STRONG_COMPONENTS
+static void test(leda::graph& G, node_array<int>& compnum,
+        std::chrono::duration<double>& el_s1, std::chrono::duration<double>& el_s2)
+{
+    int scc,my_scc;
+    // auxiliary time variables 
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+
+    // timing my_STRONG_COMPONENTS()
+    start = std::chrono::system_clock::now();
+    my_scc = my_STRONG_COMPONENTS(G, compnum);
+    end = std::chrono::system_clock::now();
+    el_s1 = end - start;
+    std::cout<<"My_STRONG_COMPONENTS SCCs: "<<my_scc<<"\n";
+
+    // timing LEDA'S STRONG_COMPONENTS()
+    start = std::chrono::system_clock::now();
+    scc = STRONG_COMPONENTS(G, compnum);
+    end = std::chrono::system_clock::now();
+    el_s2 = end - start;
+    std::cout<<"STRONG_COMPONENTS(LEDA) SCCs: "<<scc<<"\n";
+
+    // validate my_STRONG_COMPONENTS results using the checker 
+    if (my_STRONG_COMPONENTS_checker(G,compnum))
+        std::cout<<"[my_STRONG_COMPONENTS_checker]: succeeded"<<std::endl;
+    else
+        std::cout<<"[my_STRONG_COMPONENTS_checker]: failed"<<std::endl;
+}
 
 int main()
 {
 
     // auxiliary variables
     int m;
-    int scc,my_scc;
-    int Gsize1 [] = { 2000, 4000, 9000 };
-    int Gsize2 [] = { 1000, 4000, 9000 };
+    int Gsize1 [] = { 20000, 40000, 90000 };
+    int Gsize2 [] = { 4000, 8000, 15000 };
     unsigned int cliques [] = { 5, 10, 20 };
     node temp_n1,temp_n2,x;
     list<node> LN;
-
-    // time variables 
-    std::chrono::time_point<std::chrono::system_clock> start, end;
-    std::chrono::duration<double> elapsed_seconds;
+    std::chrono::duration<double> elapsed_seconds1,elapsed_seconds2;
     
     // declare graph G and auxiliary graph temp
     leda::graph G,temp;
     node_array<bool> reached(G,false);
 
-    // iterating over Gsize1 and generating random graphs with leda's
-    // random_graph(). For each Graph created my_STRONG_COMPONENTS()
-    // and leda's STRONG_COMPONENTS() are called and timed. At the end
-    // of every iteration my_STRONG_COMPONENTS_checker is called to 
-    // evaluate my_STRONG_COMPONENTS() results.
+    // creating random graphs with leda's random_graph().
+    // For each Graph created my_STRONG_COMPONENTS()
+    // and leda's STRONG_COMPONENTS() are called and timed using a helper
+    // function "test". At the end of every iteration my_STRONG_COMPONENTS_checker
+    // is called to evaluate my_STRONG_COMPONENTS() results.
+    std::cout<<"\n[Testing on random graphes]\n"<<std::endl;
     for(unsigned int it=0; it<sizeof(Gsize1)/sizeof(Gsize1[0]); it++)
     {
         m = Gsize1[it]*log(Gsize1[it]);
@@ -36,33 +62,20 @@ int main()
   
         leda::node_array<int> compnum(G,0);
   
-        // call my_STRONG_COMPONENTS and calculate execution time
-        start = std::chrono::system_clock::now();
-        my_scc = my_STRONG_COMPONENTS(G, compnum);
-        end = std::chrono::system_clock::now();
-        elapsed_seconds = end - start;
-        std::cout<<"Graph ["<<it+1<<"] "<<Gsize1[it]<<"nodes, My_STRONG_COMPONENTS sccs: "<<my_scc<<std::endl;
-        std::cout<<"Graph ["<<it+1<<"] "<<Gsize1[it]<<"nodes, My_STRONG_COMPONENTS elapsed time: "<<elapsed_seconds.count()<<"s \n";
+        std::cout<<"Graph["<<it+1<<"] generated\t nodes:"<<G.number_of_nodes()<<std::endl;
+        // call tester to calculate execution times
+        test(G,compnum,elapsed_seconds1,elapsed_seconds2);
+        std::cout<<"\t>>> My_STRONG_COMPONENTS elapsed time: "<<elapsed_seconds1.count()<<"s \n";
+        std::cout<<"\t>>> STRONG_COMPONENTS(LEDA) elapsed time: "<<elapsed_seconds2.count()<<"s \n";
   
-        // call LEDA's STRONG_COMPONENTS and calculate execution time using
-        start = std::chrono::system_clock::now();
-        scc = STRONG_COMPONENTS(G, compnum);
-        end = std::chrono::system_clock::now();
-        elapsed_seconds = end - start;
-        std::cout<<"Graph ["<<it+1<<"] "<<Gsize1[it]<<"nodes, STRONG_COMPONENTS(LEDA) sccs: "<<my_scc<<std::endl;
-        std::cout<<"Graph ["<<it+1<<"] "<<Gsize1[it]<<"nodes, STRONG_COMPONENTS(LEDA) elapsed time: "<<elapsed_seconds.count()<<"s \n";
-  
-        if (my_STRONG_COMPONENTS_checker(G,compnum))
-            std::cout<<"[my_STRONG_COMPONENTS_checker]: succeeded"<<std::endl;
-        else
-            std::cout<<"[my_STRONG_COMPONENTS_checker]: failed"<<std::endl;
   
         // initializing graph and compnum again 
         compnum.init(G,0);
         G.clear();
     }
 
-    // iterating over Gsize2 values and creating cliqued graphs
+    std::cout<<"\n[Testing on cliqued graphes]\n"<<std::endl;
+    // creating cliqued graphs
     for (unsigned int it=0; it<sizeof(Gsize2)/sizeof(Gsize2[0]); it++)
     {
         // creating the first clique 
@@ -70,7 +83,13 @@ int main()
         // adding clique to the graph
         G.join(temp);
 
-        // we now chose a random node from that clique
+        // we now chose random nodes from the first clique
+        // temp_n1 is going to be used as starting node for dfs.
+        // this will ensure us that an unreached node belongs
+        // to the newest clique.
+        // temp_n2 is going to be used a pointer to a node from
+        // the last added clique, so that we can do the linking with
+        // the next clique
         temp_n1 = G.choose_node();
         temp_n2 = G.choose_node();
 
@@ -88,7 +107,8 @@ int main()
             {
                 // for the first unreached node we find (which should be part
                 // of the newest clique) we create an edge to connect it with a
-                // random node from the previews clique
+                // random node from the previews clique and then we store that 
+                // node to use it for the next linking
                 if (!reached[x])
                 {
                     G.new_edge(temp_n2,x);
@@ -97,6 +117,15 @@ int main()
                 }
             }
         }
+
+        // using test function to get elapsed times
+        leda::node_array<int> compnum(G,0);
+        std::cout<<"Graph["<<it+1<<"] generated\t nodes:"<<G.number_of_nodes()<<std::endl;
+        test(G,compnum,elapsed_seconds1,elapsed_seconds2);
+        std::cout<<"\t>>> My_STRONG_COMPONENTS elapsed time: "<<elapsed_seconds1.count()<<"s \n";
+        std::cout<<"\t>>> STRONG_COMPONENTS(LEDA) elapsed time: "<<elapsed_seconds2.count()<<"s \n";
+
+        compnum.init(G,0);
         G.clear();
     }
     return 0;
