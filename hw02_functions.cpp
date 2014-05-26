@@ -1,6 +1,8 @@
-// Ceid Upatras academic year 2013-2014
-// Kruskal's algorithm implementation, using boost lib
-// functions file
+/* Ceid Upatras academic year 2013-2014
+ * Gryllos Prokopis, Advanced Algorithms second assignment 
+ * Kruskal's algorithm implementation, using boost lib
+ * hw02_functions.cpp 
+ */
 
 #include "hw02.h"
 

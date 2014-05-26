@@ -1,6 +1,9 @@
-// Ceid Upatras academic year 2013-2014
-// (LEDA) implementations
-// header file
+/* Ceid Upatras academic year 2013-2014
+ * Gryllos Prokopis, Advanced Algorithms second assignment 
+ * Kruskal's Algorithm for finding msp on undirected 
+ * graphs implementation using Boost Library
+ * hw02.h
+ */
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 #include <boost/ptr_container/ptr_map.hpp>

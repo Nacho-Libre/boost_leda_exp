@@ -1,6 +1,8 @@
-// Ceid Upatras academic year 2013-2014
-// Boost my_kruskal testing on random and grided undirected graphs.
-// file main.cpp
+/* Ceid Upatras academic year 2013-2014
+ * Gryllos Prokopis, Advanced Algorithms second assignment 
+ * Boost, my_kruskal testing on random and grided undirected graphs.
+ * main.cpp
+ */
 #include "hw02.h"
     
 // auxiliary function to estimate execution time for both my_STRONG_COMPONENTS & STRONG_COMPONENTS
