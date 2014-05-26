@@ -5,18 +5,35 @@
  */
 #include "hw02.h"
     
-// auxiliary function to estimate execution time for both my_STRONG_COMPONENTS & STRONG_COMPONENTS
-static void test(Graph& G, WeightMap& WM, Edges_Vector& T, std::chrono::duration<double>& el_s1)
+// auxiliary function to estimate execution time for my_Kruskal,boost's and ledas kruskal
+// algorithm tested on given Graphs
+static void test(Graph& G, Edges_Vector& T)
 {
     // auxiliary time variables 
     std::chrono::time_point<std::chrono::system_clock> start, end;
+    std::chrono::duration<double> el_s;
 
     // timing my_Kruskal()
     start = std::chrono::system_clock::now();
-    my_Kruskal(G, WM, T);
+    my_Kruskal(G, T);
     end = std::chrono::system_clock::now();
-    el_s1 = end - start;
-    std::cout<<"my_Kruskal returned successfully"<<"\n";
+    el_s = end - start;
+    std::cout<<"my_Kruskal returned\nsuccessfully"<<"\n";
+    std::cout<<"\t>>> elapsed time: "<<el_s.count()<<"s \n";
+    std::cout<<"\t>>> Number of edges in Graph: "<<num_edges(G)<<"s \n";
+    std::cout<<"\t>>> Number of edges in msp: "<<T.size()<<"s \n";
+
+    // clearing Edges_Vector
+    T.clear();
+    // timing Boosts Kruskal_min_spanning_tree()
+    start = std::chrono::system_clock::now();
+    boost::kruskal_minimum_spanning_tree(G, std::back_inserter(T));
+    end = std::chrono::system_clock::now();
+    el_s = end - start;
+    std::cout<<"boost::Kruska_minnimum_spanning_tree\nreturned successfully"<<"\n";
+    std::cout<<"\t>>> elapsed time: "<<el_s.count()<<"s \n";
+    std::cout<<"\t>>> Number of edges in Graph: "<<num_edges(G)<<"s \n";
+    std::cout<<"\t>>> Number of edges in msp: "<<T.size()<<"s \n";
 }
 
 int main()
@@ -25,9 +42,8 @@ int main()
     // auxiliary variables
     Edges_Vector T;
     Distribution distribution(1, 10000);
-    int Gsize_rand [] = {1000, 4000, 7000};
+    int Gsize_rand [] = {10000, 40000, 70000};
     // int Gsize_grid [] = { 4000, 8000, 15000 };
-    std::chrono::duration<double> elaps_sec;
     Gen gen; 
     Rand_Int rng;
     
@@ -44,20 +60,17 @@ int main()
         // has no unconnected vertices using dfs_search etc
 
         // create property map so that we can access properties
-        WeightMap wm = boost::get(boost::edge_weight, g);
+        // WeightMap wm = boost::get(boost::edge_weight, g);
 
         // seeding random integer generator with system_clock 
         rng.seed(std::time(NULL));
         boost::variate_generator < Rand_Int&, Distribution > generator(rng, distribution);
         // assigning random values between 1 and 10000 to edge weights
         boost::randomize_property < boost::edge_weight_t > (g, generator);
-        std::cout<<"Graph["<<i+1<<"] generated\t vertices:"<<num_vertices(g)<<std::endl;
-        // call tester to calculate execution times
-        test(g,wm,T,elaps_sec);
+        std::cout<<"\n\tGraph["<<i+1<<"] generated\t vertices:"<<num_vertices(g)<<std::endl;
 
-        std::cout<<"\t>>> my_Kruskal elapsed time: "<<elaps_sec.count()<<"s \n";
-        std::cout<<"\t>>> Number of edges is Graph: "<<num_edges(g)<<"s \n";
-        std::cout<<"\t>>> Number of edges is msp: "<<T.size()<<"s \n";
+        // call tester to calculate execution times and print
+        test(g,T);
 
         // initializing graph again 
         g.clear();

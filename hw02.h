@@ -9,17 +9,19 @@
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/graph/small_world_generator.hpp>
 #include <boost/random/linear_congruential.hpp>
+#include <boost/graph/kruskal_min_spanning_tree.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/graph/random.hpp>
-#include <time.h>
+#include <iterator>
 #include <iostream>
-#include <queue>
 #include <cstdlib>
 #include <chrono>
+#include <queue>
+#include <time.h>
 
 typedef boost::adjacency_list < boost::vecS,boost::vecS,boost::undirectedS,
-        boost::property < boost::vertex_index_t, int >,
+        boost::no_property,
         boost::property < boost::edge_weight_t, int > > Graph;
 typedef boost::property_map < Graph, boost::edge_weight_t >::type WeightMap;
 typedef boost::small_world_iterator<boost::minstd_rand, Graph> SWGen;
@@ -31,4 +33,4 @@ typedef boost::mt19937 Rand_Int;
 typedef std::vector < boost::graph_traits < Graph >::edge_descriptor > Edges_Vector;
 
 // my_Kruskal prototype
-void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T);
+void my_Kruskal(Graph& g, Edges_Vector& T);

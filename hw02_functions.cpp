@@ -8,7 +8,7 @@
 
 using namespace boost;
 
-void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T)
+void my_Kruskal(Graph& g, Edges_Vector& T)
 {
     // auxiliary typedefs for later use
     typedef graph_traits<Graph>::edge_iterator edge_it;
@@ -25,14 +25,14 @@ void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T)
     // creating pair of iterators for vertices and edges
     std::pair<edge_it, edge_it> ei;
     std::pair<vertex_it, vertex_it> vi;
+    
+    WeightMap wm = get(edge_weight, g);
     weight_greater wl(wm);
     // creating a priority queue in increasing order of edges weights
     std::priority_queue<edge_desc, std::vector<edge_desc>, weight_greater> sorted_edges(wl); 
     // iterate over edges and push all edges into sorted_edges vector
     for (ei=edges(g); ei.first != ei.second; ++ei.first) 
-    {
         sorted_edges.push(*ei.first);   
-    }
 
     // iterating over vertices and creating lists for each vertex
     // then assign those lists to the vertices through the vert_map
