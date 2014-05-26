@@ -13,16 +13,19 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/graph/random.hpp>
+#include <time.h>
 #include <iterator>
 #include <iostream>
 #include <cstdlib>
 #include <chrono>
 #include <queue>
-#include <time.h>
+#include <map>
 
+// Graph type definition
 typedef boost::adjacency_list < boost::vecS,boost::vecS,boost::undirectedS,
         boost::no_property,
         boost::property < boost::edge_weight_t, int > > Graph;
+// weight property_map
 typedef boost::property_map < Graph, boost::edge_weight_t >::type WeightMap;
 typedef boost::small_world_iterator<boost::minstd_rand, Graph> SWGen;
 typedef boost::uniform_int<> Distribution; 
@@ -31,6 +34,12 @@ typedef boost::uniform_int<> Distribution;
 typedef boost::minstd_rand Gen;
 typedef boost::mt19937 Rand_Int; 
 typedef std::vector < boost::graph_traits < Graph >::edge_descriptor > Edges_Vector;
+
+// auxiliary typedefs for later use
+typedef graph_traits<Graph>::edge_iterator edge_it;
+typedef graph_traits<Graph>::edge_descriptor edge_desc;
+typedef graph_traits<Graph>::vertex_iterator vertex_it;
+typedef graph_traits<Graph>::vertex_descriptor vertex_desc;
 
 // my_Kruskal prototype
 void my_Kruskal(Graph& g, Edges_Vector& T);

@@ -11,10 +11,6 @@ using namespace boost;
 void my_Kruskal(Graph& g, Edges_Vector& T)
 {
     // auxiliary typedefs for later use
-    typedef graph_traits<Graph>::edge_iterator edge_it;
-    typedef graph_traits<Graph>::edge_descriptor edge_desc;
-    typedef graph_traits<Graph>::vertex_iterator vertex_it;
-    typedef graph_traits<Graph>::vertex_descriptor vertex_desc;
     typedef property_traits<WeightMap>::value_type W_value;
     typedef indirect_cmp<WeightMap, std::greater<W_value> > weight_greater;
 
@@ -36,8 +32,7 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
 
     // iterating over vertices and creating lists for each vertex
     // then assign those lists to the vertices through the vert_map
-    for (vi=vertices(g); vi.first != vi.second; ++vi.first) 
-    {
+    for (vi=vertices(g); vi.first != vi.second; ++vi.first){
         std::vector<vertex_desc> L;
         L.push_back(*vi.first);
         vert_map[*vi.first] = L;
@@ -46,15 +41,13 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
     // main loop to create mst
     edge_desc aux_e;
     vertex_desc v,u;
-    for(;;)
-    {   
+    for(;;){   
         // choose edge with lowest weight
         aux_e = sorted_edges.top();
         // get vertices that append to edge
         u = source(aux_e, g);
         v = target(aux_e, g);
-        if (vert_map[u].front() != vert_map[v].front())
-        {
+        if (vert_map[u].front() != vert_map[v].front()){
             // if statement true then aux_e belongs to mst
             T.push_back(aux_e);
             // creating auxiliary vector
@@ -62,14 +55,12 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
             // preallocate memory for merged vector
             L1L2.reserve(vert_map[u].size() + vert_map[v].size() );  
             // merge vectors 
-            if (vert_map[u].size()>=vert_map[v].size())
-            {
+            if (vert_map[u].size()>=vert_map[v].size()){
                 // create merged vector
                 L1L2.insert( L1L2.end(), vert_map[u].begin(), vert_map[u].end() );
                 L1L2.insert( L1L2.end(), vert_map[v].begin(), vert_map[v].end() );
             }
-            else
-            {
+            else{
                 // create merged vector
                 L1L2.insert( L1L2.end(), vert_map[v].begin(), vert_map[v].end() );
                 L1L2.insert( L1L2.end(), vert_map[u].begin(), vert_map[u].end() );
@@ -86,3 +77,28 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
     return;
 }
 
+// implementation of helper function that transforms Boost Graph to Leda Graph.
+// the given Graph g_in must be undirected otherwise this function will fail.
+void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
+{
+    unsigned int n =  num_vertices(g_in);
+    unsigned int e =  num_edges(g_in);
+
+    // create a map, to map g_in vertices to g_out nodes
+    std::map<vertex_desc,leda::node> btl_map;
+    // iterate over all g_in vertices, creating nodes for its vertex, and mapping 
+    // them together
+    std::pair<vertex_it, vertex_it> vp;
+    for (vp = vertices(g_in); vp.first != vp.second; ++vp.first){
+        leda::node v = g_out.leda::new_node(); 
+        btl_map[*vi.first] = v;
+    }
+    // iterate over all g_in edges and create corresponding edge to g_out
+    std::pair<edge_it, edge_it> ei;
+    for (ei = edges(g_out); ei.first != ei.second; ++ei.first){
+        leda::node s = btl_map[(*ei.first)->source()];
+        leda::node t = btl_map[(*ei.first)->targer()];
+        leda::edge e = g_out.leda::new_edge(s,t);
+    }
+    return;
+}
