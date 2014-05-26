@@ -25,7 +25,7 @@ int main()
     // auxiliary variables
     Edges_Vector T;
     Distribution distribution(1, 10000);
-    int Gsize_rand [] = { 1000, 4000, 7000 };
+    int Gsize_rand [] = {1000, 4000, 7000};
     // int Gsize_grid [] = { 4000, 8000, 15000 };
     std::chrono::duration<double> elaps_sec;
     Gen gen; 
@@ -37,9 +37,9 @@ int main()
     {
         // create graph g based on the small world model,
         // here we constract a small-world graph with Gsize_rand[i] vertices,
-        // each connected to its 3 nearest neighbors.Edges in the graph are 
+        // each connected to its 6 nearest neighbors.Edges in the graph are 
         // randomly rewired to different vertices with a probability of 0.04
-        Graph g(SWGen(gen, Gsize_rand[i], 3, 0.04), SWGen(), Gsize_rand[i]);
+        Graph g(SWGen(gen, Gsize_rand[i], 6, 0.04), SWGen(), Gsize_rand[i]);
         // #TODO create some tests to ensure that the generated graph
         // has no unconnected vertices using dfs_search etc
 
@@ -56,11 +56,48 @@ int main()
         test(g,wm,T,elaps_sec);
 
         std::cout<<"\t>>> my_Kruskal elapsed time: "<<elaps_sec.count()<<"s \n";
-//      std::cout<<"\t>>> STRONG_COMPONENTS(LEDA) elapsed time: "<<elapsed_seconds2.count()<<"s \n";
-//
-//      // initializing graph again 
+        std::cout<<"\t>>> Number of edges is Graph: "<<num_edges(g)<<"s \n";
+        std::cout<<"\t>>> Number of edges is msp: "<<T.size()<<"s \n";
+
+        // initializing graph again 
         g.clear();
     }
+  //Graph g;
+  //WeightMap wm = boost::get(boost::edge_weight, g);
+  //boost::add_vertex(0, g);
+  //boost::add_vertex(1, g);
+  //boost::add_vertex(2, g);
+  //boost::add_vertex(3, g);
+  //boost::add_vertex(4, g);
+
+  //boost::add_edge(0, 2, g);
+  //boost::add_edge(0, 1, g);
+  //boost::add_edge(3, 4, g);
+  //boost::add_edge(2, 3, g);
+  //boost::add_edge(4, 1, g);
+  //boost::add_edge(4, 2, g);
+  //boost::add_edge(4, 0, g);
+  //boost::add_edge(1, 2, g);
+
+  //typedef boost::graph_traits<Graph>::edge_descriptor Edge;
+  //Edge e1 = add_edge(4, 1, g).first;
+  //wm[e1] = 2;
+  //Edge e2 = add_edge(4, 2, g).first;
+  //wm[e2] = 5;
+  //Edge e3 = add_edge(4, 0, g).first;
+  //wm[e3] = 1;
+  //Edge e4 = add_edge(1, 2, g).first;
+  //wm[e4] = 10;
+  //Edge e5 = add_edge(0, 2, g).first;
+  //wm[e5] = 3;
+  //Edge e6 = add_edge(0, 1, g).first;
+  //wm[e6] = 10;
+  //Edge e7 = add_edge(3, 4, g).first;
+  //wm[e7] = 6;
+  //Edge e8 = add_edge(2, 3, g).first;
+  //wm[e8] = 7;
+  //my_Kruskal(g,wm,T);
+
 //
 //  std::cout<<"\n[Testing on cliqued graphes]\n"<<std::endl;
 //  // creating cliqued graphs

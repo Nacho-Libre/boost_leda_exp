@@ -15,10 +15,11 @@
 #include <time.h>
 #include <iostream>
 #include <queue>
+#include <cstdlib>
 #include <chrono>
 
 typedef boost::adjacency_list < boost::vecS,boost::vecS,boost::undirectedS,
-        boost::no_property,
+        boost::property < boost::vertex_index_t, int >,
         boost::property < boost::edge_weight_t, int > > Graph;
 typedef boost::property_map < Graph, boost::edge_weight_t >::type WeightMap;
 typedef boost::small_world_iterator<boost::minstd_rand, Graph> SWGen;

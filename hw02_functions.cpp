@@ -30,7 +30,9 @@ void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T)
     std::priority_queue<edge_desc, std::vector<edge_desc>, weight_greater> sorted_edges(wl); 
     // iterate over edges and push all edges into sorted_edges vector
     for (ei=edges(g); ei.first != ei.second; ++ei.first) 
+    {
         sorted_edges.push(*ei.first);   
+    }
 
     // iterating over vertices and creating lists for each vertex
     // then assign those lists to the vertices through the vert_map
@@ -46,7 +48,7 @@ void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T)
     vertex_desc v,u;
     for(;;)
     {   
-        // first choose edge with lowest weight
+        // choose edge with lowest weight
         aux_e = sorted_edges.top();
         // get vertices that append to edge
         u = source(aux_e, g);
