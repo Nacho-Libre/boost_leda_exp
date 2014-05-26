@@ -1,19 +1,19 @@
 CC=g++ 
 LEDAROOT=/usr/local/LEDA
 INCLUDEDIR=$(LEDAROOT)/incl
-CPPFLAGS=-Wall -O2 -fno-strict-aliasing -std=c++0x
+CPPFLAGS=-Wall -O2 -Wno-deprecated -std=c++0x
 LIBX11=/usr/X11R6/lib64/
 
 all:  main
 
-main: main.o hw01_functions.o
-		$(CC) -o main main.o hw01_functions.o -L$(LEDAROOT) -L$(LIBX11) -lX11 -lleda -lm 
+main: main.o hw02_functions.o
+		$(CC) -o main main.o hw02_functions.o 
 
-main.o: main.cpp hw01.h 
-		$(CC) -c main.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
+main.o: main.cpp hw02.h 
+		$(CC) -c main.cpp -I$(CPPFLAGS)
 
-hw01_functions.o: hw01_functions.cpp hw01.h
-		$(CC) -c -o $@ hw01_functions.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
+hw02_functions.o: hw02_functions.cpp hw02.h
+		$(CC) -c -o $@ hw02_functions.cpp -I$(CPPFLAGS)
 
 clean:
 	rm -rf *.o main
