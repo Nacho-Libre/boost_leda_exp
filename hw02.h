@@ -24,7 +24,7 @@ typedef boost::uniform_int<> Distribution;
 // and this to form the propabillity during graph creation, don't realy know the difference.
 typedef boost::minstd_rand Gen;
 typedef boost::mt19937 Rand_Int; 
-typedef std::vector < boost::graph_traits < Graph >::edge_descriptor > Vector;
+typedef std::vector < boost::graph_traits < Graph >::edge_descriptor > Edges_Vector;
 
 // my_Kruskal prototype
-void my_Kruskal(Graph& g, WeightMap& wm, Vector& T);
+void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T);

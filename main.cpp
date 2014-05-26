@@ -4,24 +4,24 @@
 #include "hw02.h"
     
 // auxiliary function to estimate execution time for both my_STRONG_COMPONENTS & STRONG_COMPONENTS
-  //static void test(Graph& G, WeightMap& WM, Vector& T, std::chrono::duration<double>& el_s1)
-  //{
-  //    // auxiliary time variables 
-  //    std::chrono::time_point<std::chrono::system_clock> start, end;
+static void test(Graph& G, WeightMap& WM, Edges_Vector& T, std::chrono::duration<double>& el_s1)
+{
+    // auxiliary time variables 
+    std::chrono::time_point<std::chrono::system_clock> start, end;
 
-  //    // timing my_Kruskal()
-  //    start = std::chrono::system_clock::now();
-  //    my_Kruskal(G, WM, T);
-  //    end = std::chrono::system_clock::now();
-  //    el_s1 = end - start;
-  //    std::cout<<"my_Kruskal returned successfully"<<"\n";
-  //}
+    // timing my_Kruskal()
+    start = std::chrono::system_clock::now();
+    my_Kruskal(G, WM, T);
+    end = std::chrono::system_clock::now();
+    el_s1 = end - start;
+    std::cout<<"my_Kruskal returned successfully"<<"\n";
+}
 
 int main()
 {
 
     // auxiliary variables
-    Vector T;
+    Edges_Vector T;
     Distribution distribution(1, 10000);
     int Gsize_rand [] = { 1000, 4000, 7000 };
     // int Gsize_grid [] = { 4000, 8000, 15000 };
@@ -51,9 +51,8 @@ int main()
         boost::randomize_property < boost::edge_weight_t > (g, generator);
         std::cout<<"Graph["<<i+1<<"] generated\t vertices:"<<num_vertices(g)<<std::endl;
         // call tester to calculate execution times
-   //     test(g,wm,T,elaps_sec);
+        test(g,wm,T,elaps_sec);
 
-        my_Kruskal(g, wm, T);
         std::cout<<"\t>>> my_Kruskal elapsed time: "<<elaps_sec.count()<<"s \n";
 //      std::cout<<"\t>>> STRONG_COMPONENTS(LEDA) elapsed time: "<<elapsed_seconds2.count()<<"s \n";
 //

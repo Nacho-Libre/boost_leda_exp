@@ -6,7 +6,7 @@
 
 using namespace boost;
 
-void my_Kruskal(Graph& g, WeightMap& wm, Vector* T)
+void my_Kruskal(Graph& g, WeightMap& wm, Edges_Vector& T)
 {
     // auxiliary typedefs for later use
     typedef graph_traits<Graph>::edge_iterator edge_it;
@@ -52,7 +52,7 @@ void my_Kruskal(Graph& g, WeightMap& wm, Vector* T)
         if (vert_map[u].front() != vert_map[v].front())
         {
             // if statement true then aux_e belongs to mst
-            (*T).push_back(aux_e);
+            T.push_back(aux_e);
             // creating auxiliary vector
             std::vector<vertex_desc> L1L2;
             // preallocate memory for merged vector
@@ -76,7 +76,7 @@ void my_Kruskal(Graph& g, WeightMap& wm, Vector* T)
         }   
         // removing used edge from sorted_edges
         sorted_edges.pop();
-        if ((*T).size() == num_vertices(g)-1)
+        if (T.size() == num_vertices(g)-1)
             break;
     }
     return;
