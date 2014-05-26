@@ -4,6 +4,7 @@
  * graphs implementation using Boost Library
  * hw02.h
  */
+#include <LEDA/graph/graph.h>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
@@ -36,10 +37,10 @@ typedef boost::mt19937 Rand_Int;
 typedef std::vector < boost::graph_traits < Graph >::edge_descriptor > Edges_Vector;
 
 // auxiliary typedefs for later use
-typedef graph_traits<Graph>::edge_iterator edge_it;
-typedef graph_traits<Graph>::edge_descriptor edge_desc;
-typedef graph_traits<Graph>::vertex_iterator vertex_it;
-typedef graph_traits<Graph>::vertex_descriptor vertex_desc;
+typedef boost::graph_traits<Graph>::edge_iterator edge_it;
+typedef boost::graph_traits<Graph>::edge_descriptor edge_desc;
+typedef boost::graph_traits<Graph>::vertex_iterator vertex_it;
+typedef boost::graph_traits<Graph>::vertex_descriptor vertex_desc;
 
 // my_Kruskal prototype
 void my_Kruskal(Graph& g, Edges_Vector& T);
