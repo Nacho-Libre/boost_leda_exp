@@ -14,7 +14,6 @@ static void test(Graph& G)
     // auxiliary time variables 
     std::chrono::time_point<std::chrono::system_clock> start, end;
     std::chrono::duration<double> el_s;
-
     // timing my_Kruskal()
     start = std::chrono::system_clock::now();
     my_Kruskal(G,T);
@@ -50,7 +49,6 @@ static void test(Graph& G)
     std::cout<<"leda::MIN_SPANNING_TREE\nreturned successfully"<<"\n";
     std::cout<<"\t>>> elapsed time: "<<el_s.count()<<"s \n";
     std::cout<<"\t>>> Number of edges in Graph: "<<L_G.number_of_edges()<<" \n";
-    return;
 }
 
 int main()
@@ -80,9 +78,6 @@ int main()
 
         // call tester to calculate execution times and print
         test(g);
-
-        // initializing graph again 
-        g.clear();
     }
     std::cout<<"\n[Testing on GRID GRAPHS]\n"<<std::endl;
     for(unsigned int i=0; i<sizeof(Gsize_grid)/sizeof(Gsize_grid[0]); i++)
@@ -100,13 +95,9 @@ int main()
         // assigning random values between 1 and 10000 to edge weights
         forall_edges(e,g)
             w[e] = generator();
-        Graph gg;
-        from_leda_to_boost(g,w,gg);
-        WeightMap wm = get(boost::edge_weight, gg);
-        std::pair<edge_it, edge_it> ei;
-        for (ei = edges(gg); ei.first != ei.second; ++ei.first)
-            std::cout<<wm[*ei.first]<<std::endl;
-        //test(gg);
+        Graph bg;
+        from_leda_to_boost(g,w,bg);
+        test(bg);
     }
     return 0;
 }
