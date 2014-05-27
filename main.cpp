@@ -18,8 +18,6 @@ static void test(Graph& G)
     // timing my_Kruskal()
     start = std::chrono::system_clock::now();
     my_Kruskal(G,T);
-    for(unsigned int i=0;i<10;i++)
-        std::cout<<T[i]<<std::endl;
     end = std::chrono::system_clock::now();
     el_s = end - start;
     std::cout<<"my_Kruskal returned\nsuccessfully"<<"\n";
@@ -31,8 +29,6 @@ static void test(Graph& G)
     // timing Boosts Kruskal_min_spanning_tree()
     start = std::chrono::system_clock::now();
     boost::kruskal_minimum_spanning_tree(G, std::back_inserter(T));
-    for(unsigned int i=0;i<10;i++)
-        std::cout<<T[i]<<std::endl;
     end = std::chrono::system_clock::now();
     el_s = end - start;
     std::cout<<"boost::Kruskal_minnimum_spanning_tree\nreturned successfully"<<"\n";
@@ -49,8 +45,6 @@ static void test(Graph& G)
     // timing Boosts Kruskal_min_spanning_tree()
     start = std::chrono::system_clock::now();
     min_tree_edges = MIN_SPANNING_TREE(L_G,A);
-    leda::edge e;
-    forall(e,min_tree_edges) L_G.print_edge(e); // EDWWW 
     end = std::chrono::system_clock::now();
     el_s = end - start;
     std::cout<<"leda::MIN_SPANNING_TREE\nreturned successfully"<<"\n";
@@ -63,7 +57,7 @@ int main()
 
     // auxiliary variables
     Distribution distribution(1, 10000);
-    int Gsize_rand [] = {10};
+    int Gsize_rand [] = {10000,40000,70000};
     // int Gsize_grid [] = { 4000, 8000, 15000 };
     Gen gen; 
     Rand_Int rng;
