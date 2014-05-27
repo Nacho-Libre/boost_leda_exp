@@ -5,6 +5,7 @@
  * hw02.h
  */
 #include <LEDA/graph/graph.h>
+#include <LEDA/graph/min_span.h>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
@@ -44,3 +45,6 @@ typedef boost::graph_traits<Graph>::vertex_descriptor vertex_desc;
 
 // my_Kruskal prototype
 void my_Kruskal(Graph& g, Edges_Vector& T);
+
+// helper function that creates leda suitable graph from a given boost graph
+void from_boost_to_leda(Graph& g_in, leda::graph& g_out);

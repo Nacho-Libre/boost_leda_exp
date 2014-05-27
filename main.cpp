@@ -34,6 +34,9 @@ static void test(Graph& G, Edges_Vector& T)
     std::cout<<"\t>>> elapsed time: "<<el_s.count()<<"s \n";
     std::cout<<"\t>>> Number of edges in Graph: "<<num_edges(G)<<"s \n";
     std::cout<<"\t>>> Number of edges in msp: "<<T.size()<<"s \n";
+
+    // calling helper function to transform G into LEDA graph
+    
 }
 
 int main()
@@ -55,7 +58,7 @@ int main()
         // here we constract a small-world graph with Gsize_rand[i] vertices,
         // each connected to its 6 nearest neighbors.Edges in the graph are 
         // randomly rewired to different vertices with a probability of 0.04
-        Graph g(SWGen(gen, Gsize_rand[i], 6, 0.04), SWGen(), Gsize_rand[i]);
+        Graph g(SWGen(gen, Gsize_rand[i], 8, 0.04), SWGen(), Gsize_rand[i]);
         // #TODO create some tests to ensure that the generated graph
         // has no unconnected vertices using dfs_search etc
 

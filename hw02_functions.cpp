@@ -83,6 +83,9 @@ void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
 {
     unsigned int n =  num_vertices(g_in);
     unsigned int e =  num_edges(g_in);
+    // edge array to store edges weights
+    leda::edge_array<int> weights(g_in);
+    Weightmap wm = get(edge_weight, g_in);
 
     // create a map, to map g_in vertices to g_out nodes
     std::map<vertex_desc,leda::node> btl_map;
@@ -94,11 +97,13 @@ void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
         btl_map[*vp.first] = v;
     }
     // iterate over all g_in edges and create corresponding edge to g_out
+    // and assigning weights.
     std::pair<edge_it, edge_it> ei;
     for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
         leda::node s = btl_map[source(*ei.first,g_in)];
         leda::node t = btl_map[target(*ei.first,g_in)];
         leda::edge e = g_out.new_edge(s,t);
+        weights[e] = wm[*ei.first];
     }
     return;
 }
