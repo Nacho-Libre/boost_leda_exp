@@ -78,32 +78,34 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
 }
 
 // implementation of helper function that transforms Boost Graph to Leda Graph.
-// the given Graph g_in must be undirected otherwise this function will fail.
 void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
 {
-    unsigned int n =  num_vertices(g_in);
-    unsigned int e =  num_edges(g_in);
-    // edge array to store edges weights
-    leda::edge_array<int> weights(g_in);
-    Weightmap wm = get(edge_weight, g_in);
+    WeightMap wm = get(edge_weight, g_in);
 
     // create a map, to map g_in vertices to g_out nodes
-    std::map<vertex_desc,leda::node> btl_map;
+    // and a map to map edges of g_in to edges of g_out
+    std::map<vertex_desc, leda::node> vtn_map;
+    std::map<edge_desc, leda::edge> ete_map;
     // iterate over all g_in vertices, creating nodes for its vertex, and mapping 
     // them together
     std::pair<vertex_it, vertex_it> vp;
     for (vp = vertices(g_in); vp.first != vp.second; ++vp.first){
         leda::node v =  g_out.new_node(); 
-        btl_map[*vp.first] = v;
+        vtn_map[*vp.first] = v;
     }
     // iterate over all g_in edges and create corresponding edge to g_out
     // and assigning weights.
     std::pair<edge_it, edge_it> ei;
     for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
-        leda::node s = btl_map[source(*ei.first,g_in)];
-        leda::node t = btl_map[target(*ei.first,g_in)];
+        leda::node s = vtn_map[source(*ei.first,g_in)];
+        leda::node t = vtn_map[target(*ei.first,g_in)];
         leda::edge e = g_out.new_edge(s,t);
-        weights[e] = wm[*ei.first];
+        ete_map[*ei.first] = e;
+    }
+    // edge array to store edges weights
+    leda::edge_array<int> w(g_out,0);
+    for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
+        w[ete_map[*ei.first]] = wm[*ei.first];
     }
     return;
 }

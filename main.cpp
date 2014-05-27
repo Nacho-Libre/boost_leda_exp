@@ -35,8 +35,11 @@ static void test(Graph& G, Edges_Vector& T)
     std::cout<<"\t>>> Number of edges in Graph: "<<num_edges(G)<<"s \n";
     std::cout<<"\t>>> Number of edges in msp: "<<T.size()<<"s \n";
 
+    // creating a leda compatible undirected graph
+    leda::graph L_G;
+    L_G.make_undirected();
     // calling helper function to transform G into LEDA graph
-    
+    from_boost_to_leda(G,L_G);
 }
 
 int main()
@@ -45,7 +48,7 @@ int main()
     // auxiliary variables
     Edges_Vector T;
     Distribution distribution(1, 10000);
-    int Gsize_rand [] = {10000, 40000, 70000};
+    int Gsize_rand [] = {10, 40, 70};
     // int Gsize_grid [] = { 4000, 8000, 15000 };
     Gen gen; 
     Rand_Int rng;
