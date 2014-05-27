@@ -78,34 +78,56 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
 }
 
 // implementation of helper function that transforms Boost Graph to Leda Graph.
-void from_boost_to_leda(Graph& g_in, leda::graph& g_out, leda::edge_array<int>& W) 
+void from_boost_to_leda(Graph& b_g, leda::graph& l_g, leda::edge_array<int>& W) 
 {
-    WeightMap wm = get(edge_weight, g_in);
+    WeightMap wm = get(edge_weight, b_g);
 
     // create a map, to map g_in vertices to g_out nodes
-    // and a map to map edges of g_in to edges of g_out
+    // and a map to map edges of b_g to edges of l_g
     std::map<vertex_desc, leda::node> vtn_map;
     std::map<edge_desc, leda::edge> ete_map;
     // iterate over all g_in vertices, creating nodes for its vertex, and mapping 
     // them together
     std::pair<vertex_it, vertex_it> vp;
-    for (vp = vertices(g_in); vp.first != vp.second; ++vp.first){
-        leda::node v =  g_out.new_node(); 
+    for (vp = vertices(b_g); vp.first != vp.second; ++vp.first){
+        leda::node v =  l_g.new_node(); 
         vtn_map[*vp.first] = v;
     }
     // iterate over all g_in edges and create corresponding edge to g_out
     // and assigning weights.
     std::pair<edge_it, edge_it> ei;
-    for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
-        leda::node s = vtn_map[source(*ei.first,g_in)];
-        leda::node t = vtn_map[target(*ei.first,g_in)];
-        leda::edge e = g_out.new_edge(s,t);
+    for (ei = edges(b_g); ei.first != ei.second; ++ei.first){
+        leda::node s = vtn_map[source(*ei.first,b_g)];
+        leda::node t = vtn_map[target(*ei.first,b_g)];
+        leda::edge e = l_g.new_edge(s,t);
         ete_map[*ei.first] = e;
     }
     // edge array to store edges weights
-    leda::edge_array<int> w(g_out,0);
-    for (ei = edges(g_in); ei.first != ei.second; ++ei.first)
+    leda::edge_array<int> w(l_g,0);
+    for (ei = edges(b_g); ei.first != ei.second; ++ei.first)
         w[ete_map[*ei.first]] = wm[*ei.first];
     W = w; 
+    return;
+}
+
+// implementation of helper function that makes a Leda Graph boost compatible.
+void from_leda_to_boost(leda::graph& l_g, leda::edge_array<int>& W, Graph& b_g) 
+{
+    // create a map,to map leda's nodes with boost's vertices.
+    // and a map to map edges of l_g to b_g
+    std::map<leda::node, vertex_desc> ntv_map;
+    // auxiliary variables
+    leda::edge e;
+    leda::node n;
+
+    forall_nodes(n,l_g){
+        vertex_desc v = add_vertex(b_g);
+        ntv_map[n] = v;
+    }
+    WeightMap wm = get(edge_weight, b_g);
+    forall_edges(e,l_g){
+        edge_desc u = add_edge(ntv_map[l_g.source(e)],ntv_map[l_g.target(e)],b_g).first;
+        wm[u] = W[e];
+    }
     return;
 }

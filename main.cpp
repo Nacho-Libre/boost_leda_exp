@@ -42,7 +42,7 @@ static void test(Graph& G)
     // calling helper function to transform G into LEDA graph
     from_boost_to_leda(G,L_G,A);
 
-    // timing Boosts Kruskal_min_spanning_tree()
+    // timing Leda's min_spanning_tree()
     start = std::chrono::system_clock::now();
     min_tree_edges = MIN_SPANNING_TREE(L_G,A);
     end = std::chrono::system_clock::now();
@@ -50,20 +50,20 @@ static void test(Graph& G)
     std::cout<<"leda::MIN_SPANNING_TREE\nreturned successfully"<<"\n";
     std::cout<<"\t>>> elapsed time: "<<el_s.count()<<"s \n";
     std::cout<<"\t>>> Number of edges in Graph: "<<L_G.number_of_edges()<<" \n";
+    return;
 }
 
 int main()
 {
-
     // auxiliary variables
     Distribution distribution(1, 10000);
     int Gsize_rand [] = {10000,40000,70000};
-    // int Gsize_grid [] = { 4000, 8000, 15000 };
+    int Gsize_grid [] = {100, 200, 300};
     Gen gen; 
     Rand_Int rng;
     
 
-    std::cout<<"\n[Testing on random graphes]\n"<<std::endl;
+    std::cout<<"\n[Testing on RANDOM GRAPHS]\n"<<std::endl;
     for(unsigned int i=0; i<sizeof(Gsize_rand)/sizeof(Gsize_rand[0]); i++)
     {
         // create graph g based on the small world model,
@@ -71,12 +71,6 @@ int main()
         // each connected to its 6 nearest neighbors.Edges in the graph are 
         // randomly rewired to different vertices with a probability of 0.04
         Graph g(SWGen(gen, Gsize_rand[i], 8, 0.04), SWGen(), Gsize_rand[i]);
-        // #TODO create some tests to ensure that the generated graph
-        // has no unconnected vertices using dfs_search etc
-
-        // create property map so that we can access properties
-        // WeightMap wm = boost::get(boost::edge_weight, g);
-
         // seeding random integer generator with system_clock 
         rng.seed(std::time(NULL));
         boost::variate_generator < Rand_Int&, Distribution > generator(rng, distribution);
@@ -89,6 +83,30 @@ int main()
 
         // initializing graph again 
         g.clear();
+    }
+    std::cout<<"\n[Testing on GRID GRAPHS]\n"<<std::endl;
+    for(unsigned int i=0; i<sizeof(Gsize_grid)/sizeof(Gsize_grid[0]); i++)
+    {
+        leda::edge e;
+        // create leda graph
+        leda::graph g;
+        // create 2 dimensional nxn grid grap
+        grid_graph(g,Gsize_grid[i]);
+        // edge array to store edges weights
+        leda::edge_array<int> w(g,0);
+        // seeding random integer generator with system_clock 
+        rng.seed(std::time(NULL));
+        boost::variate_generator < Rand_Int&, Distribution > generator(rng, distribution);
+        // assigning random values between 1 and 10000 to edge weights
+        forall_edges(e,g)
+            w[e] = generator();
+        Graph gg;
+        from_leda_to_boost(g,w,gg);
+        WeightMap wm = get(boost::edge_weight, gg);
+        std::pair<edge_it, edge_it> ei;
+        for (ei = edges(gg); ei.first != ei.second; ++ei.first)
+            std::cout<<wm[*ei.first]<<std::endl;
+        //test(gg);
     }
     return 0;
 }

@@ -7,6 +7,7 @@
 #include <LEDA/graph/graph.h>
 #include <LEDA/graph/min_span.h>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/grid_graph.hpp>
 #include <boost/pending/indirect_cmp.hpp>
 #include <boost/ptr_container/ptr_map.hpp>
 #include <boost/graph/small_world_generator.hpp>
@@ -48,3 +49,6 @@ void my_Kruskal(Graph& g, Edges_Vector& T);
 
 // helper function that creates leda suitable graph from a given boost graph
 void from_boost_to_leda(Graph& g_in, leda::graph& g_out, leda::edge_array<int>& W);
+
+// implementation of helper function that makes a Leda Graph boost compatible.
+void from_leda_to_boost(leda::graph& l_g, leda::edge_array<int>& W, Graph& b_g);
