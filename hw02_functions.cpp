@@ -78,7 +78,7 @@ void my_Kruskal(Graph& g, Edges_Vector& T)
 }
 
 // implementation of helper function that transforms Boost Graph to Leda Graph.
-void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
+void from_boost_to_leda(Graph& g_in, leda::graph& g_out, leda::edge_array<int>& W) 
 {
     WeightMap wm = get(edge_weight, g_in);
 
@@ -104,8 +104,8 @@ void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
     }
     // edge array to store edges weights
     leda::edge_array<int> w(g_out,0);
-    for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
+    for (ei = edges(g_in); ei.first != ei.second; ++ei.first)
         w[ete_map[*ei.first]] = wm[*ei.first];
-    }
+    W = w; 
     return;
 }

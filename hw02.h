@@ -47,4 +47,4 @@ typedef boost::graph_traits<Graph>::vertex_descriptor vertex_desc;
 void my_Kruskal(Graph& g, Edges_Vector& T);
 
 // helper function that creates leda suitable graph from a given boost graph
-void from_boost_to_leda(Graph& g_in, leda::graph& g_out);
+void from_boost_to_leda(Graph& g_in, leda::graph& g_out, leda::edge_array<int>& W);
