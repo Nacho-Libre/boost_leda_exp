@@ -90,15 +90,15 @@ void from_boost_to_leda(Graph& g_in, leda::graph& g_out)
     // them together
     std::pair<vertex_it, vertex_it> vp;
     for (vp = vertices(g_in); vp.first != vp.second; ++vp.first){
-        leda::node v = g_out.leda::new_node(); 
-        btl_map[*vi.first] = v;
+        leda::node v =  g_out.new_node(); 
+        btl_map[*vp.first] = v;
     }
     // iterate over all g_in edges and create corresponding edge to g_out
     std::pair<edge_it, edge_it> ei;
-    for (ei = edges(g_out); ei.first != ei.second; ++ei.first){
-        leda::node s = btl_map[(*ei.first)->source()];
-        leda::node t = btl_map[(*ei.first)->targer()];
-        leda::edge e = g_out.leda::new_edge(s,t);
+    for (ei = edges(g_in); ei.first != ei.second; ++ei.first){
+        leda::node s = btl_map[source(*ei.first,g_in)];
+        leda::node t = btl_map[target(*ei.first,g_in)];
+        leda::edge e = g_out.new_edge(s,t);
     }
     return;
 }

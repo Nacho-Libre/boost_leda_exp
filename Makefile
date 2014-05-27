@@ -10,7 +10,7 @@ main: main.o hw02_functions.o
 		$(CC) -o main main.o hw02_functions.o -L$(LEDAROOT) -L$(LIBX11) -lX11 -lleda -lm
 
 main.o: main.cpp hw02.h 
-		$(CC) -c main.cpp I$(INCLUDEDIR) $(CPPFLAGS)
+		$(CC) -c main.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
 
 hw02_functions.o: hw02_functions.cpp hw02.h
 		$(CC) -c -o $@ hw02_functions.cpp -I$(INCLUDEDIR) $(CPPFLAGS)
