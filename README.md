@@ -5,7 +5,7 @@ Advanced Algorithms Implementations Second Assignment
 C++ Boost Leda experimental use of Boost and Leda Data types and functions.
 
 Here you can find a pretty simple implementation of Kruskal's Algoritm for finding minnimum spanning trees on connected undirected graphs.
-Also there are two helper functions for transforming Boost Graphs to Leda Graphs and vice versa.
+There are also two helper functions for transforming Boost Graphs to Leda Graphs and vice versa.
 
 ------
 
