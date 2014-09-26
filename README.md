@@ -14,7 +14,7 @@ Content of this repository
 In case you want to use this repository be carefull, this code comes with ABSOLUTELY NO WARRANTY!
 
 --
-Gryllos Prokopis 
-Upatras 2013-2014<br> 
+Gryllos Prokopis<br> 
+Upatras 2013-2014 
 
 --
