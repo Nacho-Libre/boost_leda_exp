@@ -2,7 +2,7 @@
 Advanced Algorithms Implementations<br> using Boost and Leda Data types and functions.
 ----
 
-Content of the repository
+Content of this repository
 --
 * [[kruskal_mst](https://github.com/Nacho-Libre/kruskal_strong_comp/tree/master/kruskal_mst)] presents a simple implementation of Kruskal's Algorithm for finding minnimum spanning trees on connected undirected graphs. There are also two helper functions for transforming Boost Graphs to Leda Graphs and vice versa.<br>Implented using Boost & Leda Library
 
@@ -14,6 +14,7 @@ Content of the repository
 In case you want to use this repository be carefull, this code comes with ABSOLUTELY NO WARRANTY!
 
 --
-Ceid Upatras 2013-2014<br> Gryllos Prokopis 
+Gryllos Prokopis 
+Upatras 2013-2014<br> 
 
 --
