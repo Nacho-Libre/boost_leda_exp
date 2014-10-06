@@ -1,5 +1,5 @@
 
-Advanced Algorithms Implementations<br> using Boost and Leda Data types and functions.
+Advanced Algorithms Implementations<br>(using Boost & Leda).
 ----
 
 Content of this repository
