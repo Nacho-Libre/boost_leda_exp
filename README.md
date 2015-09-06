@@ -2,7 +2,7 @@
 ## Advanced Algorithms Implementations
 
 ### Requirements
-In order to run the test you are going to need a version of C++ install and also libraries <b>BOOST</b> and <b>LEDA</b>
+In order to run the test you are going to need a version of <b>C++</b> installed and also libraries <b>BOOST</b> and <b>LEDA</b>
 
 ### Content of this repository
 
