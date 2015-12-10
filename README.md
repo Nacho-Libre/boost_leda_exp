@@ -16,7 +16,8 @@ In order to run the test you are going to need a version of <b>C++</b> installed
 In case you want to use this repository be carefull, this code comes with ABSOLUTELY NO WARRANTY!
 
 --
-Gryllos Prokopis<br> 
+__Author__ <br>
+Gryllos Prokopis gryllosprokopis@gmail.com <br> 
 Upatras 2013-2014 
 
 --
